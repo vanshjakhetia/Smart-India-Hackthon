@@ -15,7 +15,7 @@ import joblib
 
 # from joblib import parallel_backend
 
-mj = joblib.load("./ai_traffic_system/model_joblib")  # mj => model joblib
+mj = joblib.load(r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\model_joblib")  # mj => model joblib
 
 
 # def ml_model_timer(on_off, flow1, flow2, flow3, flow4):
@@ -74,8 +74,8 @@ nextGreen = (
 
 currentYellow = 0  # Indicates whether yellow signal is on or off initial condition
 
-speeds = {"car": 1.62}  # average speeds of vehicles 3.24
-# speeds = {'car':2.25, 'bus':1.8, 'truck':1.8, 'bike':2.5}
+# speeds = {"car": 1.62}  # average speeds of vehicles 3.24
+speeds = {'car':2.25, 'bus':1.8, 'truck':1.8, 'bike':2.5 ,'ambulance' :3.2}
 
 
 # Coordinates of vehicles' start
@@ -98,8 +98,9 @@ vehicles = {
     "left": {0: [], 1: [], 2: [], "crossed": 0},
     "up": {0: [], 1: [], 2: [], "crossed": 0},
 }
-vehicleTypes = {0: "car"}
-# vehicleTypes = {0:'car', 1:'bus', 2:'truck', 3:'bike'}
+# vehicleTypes = {0: "car"}
+vehicleTypes = {0:'car', 1:'bus', 2:'truck', 3:'bike',4:'ambulance'}
+
 
 directionNumbers = {0: "right", 1: "down", 2: "left", 3: "up"}
 
@@ -117,8 +118,12 @@ movingGap = 30  # moving gap
 
 # set allowed vehicle types here
 
-allowedVehicleTypes = {"car": True}
-# allowedVehicleTypes = {'car': True, 'bus': True, 'truck': True, 'bike': True}
+# allowedVehicleTypes = {"car": True}
+# allowedVehicleTypes = {"bike": True}
+# allowedVehicleTypes = {"bus": True}
+# allowedVehicleTypes = {"truck": True}
+# allowedVehicleTypes = {"ambulance": True}
+allowedVehicleTypes = {'car': True, 'bus': True, 'truck': True, 'bike': True ,'ambulance': True}
 
 allowedVehicleTypesList = []
 
@@ -194,7 +199,9 @@ class Vehicle(pygame.sprite.Sprite):
         vehicles[direction][lane].append(self)
         self.index = len(vehicles[direction][lane]) - 1
         self.crossedIndex = 0
-        path = "ai_traffic_system/images/" + direction + "/" + vehicleClass + ".png"
+        # "C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\down\bike.png"
+        # path = r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\" + direction + "\" + vehicleClass + ".png"
+        path = r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\\" + direction + "\\" + vehicleClass + ".png"
         self.originalImage = pygame.image.load(path)
         self.image = pygame.image.load(path)
 
@@ -983,10 +990,72 @@ def updateValues():
             signals[i].red -= 1
 
 
-# Generating vehicles in the simulation
+# # Generating vehicles in the simulation
+# def generateVehicles():
+#     global total_flow_count, count_Leg1, count_Leg2, count_Leg3, count_Leg4 
+#     while True:
+#         vehicle_type = random.choice(allowedVehicleTypesList)
+#         lane_number = random.randint(1, 2)
+#         will_turn = 0
+
+#         if lane_number == 1:
+#             temp = random.randint(0, 99)
+#             if temp < 40:
+#                 will_turn = 1
+#         elif lane_number == 2:
+#             temp = random.randint(0, 99)
+#             if temp < 40:
+#                 will_turn = 1
+
+#         # temp1 = random.randint(0,11)
+#         # temp2 = random.randint(12,31)
+#         # temp3 = random.randint(32, 63)
+#         # temp4 = random.randint(64, 105)
+#         # temp = random.randint(0, 99)
+#         temp = random.randint(0, 100)
+
+#         direction_number = 0
+#         dist = [25, 50, 75, 101]
+#         # dist = [5, 11, 56, 101]
+#         if temp < dist[0]:
+#             direction_number = 1  # north to south (Down)
+#             count_Leg2 += 1
+#         elif temp < dist[1]:
+#             direction_number = 3  # south to north (Up)
+#             count_Leg4 += 1
+#         elif temp < dist[2]:
+#             direction_number = 0  # west to east (Right)
+#             count_Leg1 += 1
+#         elif temp < dist[3]:
+#             direction_number = 2  # east to west  (Left)
+#             count_Leg3 += 1
+#         Vehicle(
+#             lane_number,
+#             vehicleTypes[vehicle_type],
+#             direction_number,
+#             directionNumbers[direction_number],
+#             will_turn,
+#         )
+#         # y5=Vehicle
+#         # y4 = []
+#         # y4.append(y5)
+#         # print(y4)
+#         time.sleep(
+#             2.5
+#         )  # ex : 2863 car per hour / 3600 (which is 60x60) to change it to => 0.795 car / sec
+#         total_flow_count += 1
+#         print("Total flow count: ", total_flow_count)
+#         # All_percen = [L1_percen, L2_percen, L3_percen, L4_percen]
+#         # if timeElapsed % 60 == 0:
+#         #     print("Total flow count rested")
+
+
+# Define the generateVehicles function
 def generateVehicles():
-    global total_flow_count, count_Leg1, count_Leg2, count_Leg3, count_Leg4
+    global total_flow_count, count_Leg1, count_Leg2, count_Leg3, count_Leg4 
     while True:
+        print("Generating a new vehicle...")
+        # ... (rest of your code for generating vehicles)
         vehicle_type = random.choice(allowedVehicleTypesList)
         lane_number = random.randint(1, 2)
         will_turn = 0
@@ -1008,8 +1077,8 @@ def generateVehicles():
         temp = random.randint(0, 100)
 
         direction_number = 0
-        # dist = [25, 50, 75, 101]
-        dist = [5, 11, 56, 101]
+        dist = [25, 50, 75, 101]
+        # dist = [5, 11, 56, 101]
         if temp < dist[0]:
             direction_number = 1  # north to south (Down)
             count_Leg2 += 1
@@ -1033,14 +1102,24 @@ def generateVehicles():
         # y4 = []
         # y4.append(y5)
         # print(y4)
-        time.sleep(
-            1.25
-        )  # ex : 2863 car per hour / 3600 (which is 60x60) to change it to => 0.795 car / sec
+        time.sleep(1.25)
         total_flow_count += 1
+        print("Generating a new vehicle...")
         print("Total flow count: ", total_flow_count)
-        # All_percen = [L1_percen, L2_percen, L3_percen, L4_percen]
-        # if timeElapsed % 60 == 0:
-        #     print("Total flow count rested")
+
+# Create a thread for generating vehicles
+vehicle_thread = threading.Thread(target=generateVehicles)
+
+# Start the thread
+vehicle_thread.start()
+
+# Rest of your main program logic goes here
+# ...
+
+# Optionally, you can join the thread if you want your program to wait until
+# the vehicle generation thread completes its execution.
+# vehicle_thread.join()
+
 
 
 def showStats():
@@ -1088,16 +1167,16 @@ class Main:
     screenSize = (screenWidth, screenHeight)
 
     # Setting background image i.e. image of intersection
-    background = pygame.image.load("ai_traffic_system/images/intersection4.png")
+    background = pygame.image.load(r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\intersection4.png")
     # background = pygame.transform.scale(background, (1600, 920))
     # background = pygame.transform.scale(background, (1400, 800)) OR Resize with google`s help
     screen = pygame.display.set_mode(screenSize)
     pygame.display.set_caption("SIMULATION")
 
     # Loading signal images and font
-    redSignal = pygame.image.load("ai_traffic_system/images/signals/red.png")
-    yellowSignal = pygame.image.load("ai_traffic_system/images/signals/yellow.png")
-    greenSignal = pygame.image.load("ai_traffic_system/images/signals/green.png")
+    redSignal = pygame.image.load(r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\signals\red.png")
+    yellowSignal = pygame.image.load(r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\signals\yellow.png")
+    greenSignal = pygame.image.load(r"C:\Users\Vansh\Desktop\smart india hackthon\AI_Traffic_system\ai_traffic_system\images\signals\green.png")
     font = pygame.font.Font(None, 28)
     thread2 = threading.Thread(
         name="generateVehicles1", target=generateVehicles, args=()

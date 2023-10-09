@@ -1,0 +1,1 @@
+vehicleTypes = {0: "car"}
